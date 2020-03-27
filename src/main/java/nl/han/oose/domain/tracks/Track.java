@@ -1,35 +1,48 @@
 package nl.han.oose.domain.tracks;
 
+import com.google.gson.annotations.Expose;
+import nl.han.oose.domain.Playlist;
+
 import javax.persistence.*;
 
 @Entity
 public abstract class Track {
-
+    @Expose
     @Id
     @GeneratedValue
     private int id;
 
+    @Expose
     @Column
     private String title;
 
+    @Expose
     @Column
     private String performer;
 
+    @Expose
     @Column
     private int duration;
 
+    @Expose
     @Column
     private String url;
 
+    @Expose
     @Column
     private boolean offlineAvailable;
 
-    public Track(String title, String performer, int duration, String url, boolean offlineAvailable) {
+    @ManyToOne
+    private Playlist playlist;
+
+    public Track(String title, String performer, int duration, String url, boolean offlineAvailable,
+                 Playlist playlist) {
         this.title = title;
         this.performer = performer;
         this.duration = duration;
         this.url = url;
         this.offlineAvailable = offlineAvailable;
+        this.playlist = playlist;
     }
 
     public Track() {
@@ -44,31 +57,13 @@ public abstract class Track {
     public String getTitle() {
         return title;
     }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getPerformer() {
-        return performer;
-    }
-    public void setPerformer(String performer) {
-        this.performer = performer;
-    }
     public int getDuration() {
         return duration;
     }
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-    public String getUrl() {
-        return url;
-    }
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    public boolean isOfflineAvailable() {
-        return offlineAvailable;
-    }
     public void setOfflineAvailable(boolean offlineAvailable) {
         this.offlineAvailable = offlineAvailable;
+    }
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
     }
 }

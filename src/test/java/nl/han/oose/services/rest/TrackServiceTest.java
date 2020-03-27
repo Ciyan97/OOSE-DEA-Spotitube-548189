@@ -45,27 +45,27 @@ public class TrackServiceTest {
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
         String invalidToken = "0";
 
-        service.getAllTracks(playlistId, invalidToken);
+        service.getAllTracks(invalidToken, playlistId);
     }
 
     @Test
-    public void getAllTracksWithIdTest()
+    public void successfulGetAllTracksWithIdTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new TrackResponse()).when(trackController).getAllTracksNotInPlaylist(playlistId);
 
-        Response responseFromService = service.getAllTracks(playlistId, validToken);
+        Response responseFromService = service.getAllTracks(validToken, playlistId);
 
         Assert.assertEquals(responseStatus, responseFromService.getStatus());
     }
 
     @Test
-    public void getAllTracksWithoutIdTest()
+    public void successfulGetAllTracksWithoutIdTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new TrackResponse()).when(trackController).getAllTracks();
 
-        Response responseFromService = service.getAllTracks(0, validToken);
+        Response responseFromService = service.getAllTracks(validToken, 0);
 
         Assert.assertEquals(responseStatus, responseFromService.getStatus());
     }

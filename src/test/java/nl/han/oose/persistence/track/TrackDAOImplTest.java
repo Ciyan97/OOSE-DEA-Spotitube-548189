@@ -9,12 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Set;
 
 public class TrackDAOImplTest extends BasePersistenceIntegrationTest {
 
     private TrackDAO trackDAO;
-    private int playlistId = 8;
-    private int trackId = 2;
+    private int playlistId = 2;
+    private int trackId = 3;
 
     @Before
     public void setUp() throws Exception {
@@ -23,43 +24,40 @@ public class TrackDAOImplTest extends BasePersistenceIntegrationTest {
     }
 
     @Test
-    public void getAllTest() throws DatabaseException, EntityNotFoundException {
-        int expected = 6;
+    public void successfulGetAllTest() throws DatabaseException, EntityNotFoundException {
+        int expected = 5;
 
-        List<Track> tracks = trackDAO.getAll();
+        Set<Track> tracks = trackDAO.getAll();
 
         Assert.assertFalse(tracks.isEmpty());
         Assert.assertEquals(expected, tracks.size());
     }
 
     @Test
-    public void getAllInPlaylistTest() throws DatabaseException, EntityNotFoundException {
-        List<Track> tracks = trackDAO.getAllInPlaylist(playlistId);
+    public void successfulGetAllInPlaylistTest() throws DatabaseException, EntityNotFoundException {
+        Set<Track> tracks = trackDAO.getAllInPlaylist(playlistId);
 
         Assert.assertFalse(tracks.isEmpty());
-        Assert.assertNotNull(tracks.get(0));
     }
 
     @Test
-    public void getAllExcludingPlaylistTest() throws DatabaseException, EntityNotFoundException {
-        List<Track> tracks = trackDAO.getAllExcludingPlaylist(playlistId);
-
-        Assert.assertTrue(tracks.isEmpty());
-    }
-
-    @Test
-    public void getTrackTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulGetTrackTest() throws DatabaseException, EntityNotFoundException {
         Track track = trackDAO.getTrack(trackId);
 
         Assert.assertNotNull(track);
     }
 
     @Test
-    public void updateTrackIsOfflineAvailableTest() throws DatabaseException, EntityNotFoundException {
-        trackDAO.updateTrackIsOfflineAvailable(trackId, true);
+    public void successfulGetTrackNamesInPlaylistTest() throws DatabaseException, EntityNotFoundException {
+        List<String> names = trackDAO.getTrackNamesInPlaylist(playlistId);
+
+        Assert.assertNotNull(names.get(0));
+    }
+
+    @Test(expected = DatabaseException.class)
+    public void deleteTestThrowsException() throws DatabaseException, EntityNotFoundException {
+        trackDAO.delete(trackId);
 
         Track track = trackDAO.getTrack(trackId);
-
-        Assert.assertTrue(track.isOfflineAvailable());
     }
 }

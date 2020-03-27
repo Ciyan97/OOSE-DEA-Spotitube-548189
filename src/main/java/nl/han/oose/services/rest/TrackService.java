@@ -1,6 +1,7 @@
 package nl.han.oose.services.rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import nl.han.oose.controllers.track.TrackController;
 import nl.han.oose.domain.User;
 import nl.han.oose.controllers.utils.UserMap;
@@ -17,7 +18,7 @@ import javax.ws.rs.core.Response;
 @Path("/tracks")
 public class TrackService{
     private TrackController trackController;
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     public TrackService() {}
 
@@ -28,9 +29,8 @@ public class TrackService{
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllTracks(@QueryParam("forPlaylist") int playlistId, @QueryParam("token") String token)
+    public Response getAllTracks(@QueryParam("token") String token, @QueryParam("forPlaylist") int playlistId)
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
-
         User user = UserMap.getUser(token);
         TrackResponse response = getTrackResponse(playlistId);
         String jsonResponse = gson.toJson(response);

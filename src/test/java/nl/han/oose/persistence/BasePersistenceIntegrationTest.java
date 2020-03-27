@@ -12,13 +12,14 @@ import nl.han.oose.persistence.track.TrackDAO;
 import nl.han.oose.persistence.track.TrackDAOImpl;
 import nl.han.oose.persistence.user.UserDAO;
 import nl.han.oose.persistence.user.UserDAOImpl;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 public abstract class BasePersistenceIntegrationTest {
     protected SessionFactory newSessionFactory() {
@@ -51,46 +52,40 @@ public abstract class BasePersistenceIntegrationTest {
 
         User user = new User("user", "password");
 
-        Track firstSong = new Song("Despacito", "Jason Derulo", 300,
-                "https://www.youtube.com/watch?v=kJQP7kiw5Fk", false,
-                "Best Meme Songs", 0);
+        Playlist playlist = new Playlist();
 
+        Track firstSong = new Song("Despacito", "Jason Derulo", 300,
+                "https://www.youtube.com/watch?v=kJQP7kiw5Fk", false, playlist,
+                "Best Meme Songs", 0);
         Track secondSong = new Song("Thriller", "Michael Jackson", 275,
-                "https://www.youtube.com/watch?v=sOnqjkJTMaA", false,
+                "https://www.youtube.com/watch?v=sOnqjkJTMaA", false, playlist,
                 "Best Meme Songs", 0);
         Track thirdSong = new Song("billiejean", "Michael Jackson", 275,
-                "https://www.youtube.com/watch?v=sOnqjkJTMaA", false,
+                "https://www.youtube.com/watch?v=sOnqjkJTMaA", false, playlist,
                 "test", 0);
 
         Track firstVideo = new Video("How to be a Ninja", "Ryan Higa", 500,
-                "https://www.youtube.com/watch?v=JdLCEwEFCMU", false,
+                "https://www.youtube.com/watch?v=JdLCEwEFCMU", false, playlist,
                 "26-07-2007", "Learn how to be a ninja");
         Track secondVideo = new Video("10 TIPS", "Default youtuber", 666,
-                "https://www.youtube.com", true,
+                "https://www.youtube.com", true, playlist,
                 "26-07-2019", "Elke standaard klikbeet video.");
         Track thirdVideo = new Video("1100 TIPS", "Default youtuber", 666,
-                "https://www.youtube.com", true,
+                "https://www.youtube.com", true, playlist,
                 "26-07-2019", "Elke standaard klikbeet video.");
 
-        ArrayList<Track> tracks = new ArrayList<Track>();
+        Set<Track> tracks = new HashSet<Track>();
         tracks.add(firstSong);
         tracks.add(secondSong);
         tracks.add(firstVideo);
         tracks.add(secondVideo);
         tracks.add(thirdSong);
 
-        Playlist playlist = new Playlist("Mijn Coolste Playlist", user, tracks);
+        playlist.setName("Mijn Coolste Playlist");
+        playlist.setOwner(user);
+        playlist.setTracks(tracks);
 
         userDAO.save(user);
-
-        trackDAO.save(firstSong);
-        trackDAO.save(secondSong);
-        trackDAO.save(thirdSong);
-
-        trackDAO.save(firstVideo);
-        trackDAO.save(secondVideo);
-        trackDAO.save(thirdVideo);
-
         playlistDAO.save(playlist);
     }
 }

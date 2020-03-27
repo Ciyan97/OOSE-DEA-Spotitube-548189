@@ -8,7 +8,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class BaseDAO<T> implements DAO<T>{
     protected static final int EMPTY = -1;
@@ -55,6 +57,28 @@ public abstract class BaseDAO<T> implements DAO<T>{
             throw new EntityNotFoundException(EntityNotFoundException.MESSAGE);
         }
         return list;
+    }
+
+    public Set<T> getSetByIdAndHql(int id, String hql) throws DatabaseException, EntityNotFoundException {
+        Session session = null;
+        Set<T> set = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            Query query = session.createQuery(hql);
+            if (id != EMPTY) query.setParameter("id", id);
+            List list = query.list();
+            set = new HashSet<T>(list);
+        } catch (Exception e) {
+            handleException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (set == null) {
+            throw new EntityNotFoundException(EntityNotFoundException.MESSAGE);
+        }
+        return set;
     }
 
     public T getByIdAndHql(int id, String hql) throws DatabaseException, EntityNotFoundException {

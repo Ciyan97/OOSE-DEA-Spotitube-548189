@@ -22,7 +22,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.verify;
 
@@ -36,7 +38,7 @@ public class PlaylistControllerTest {
 
     private User user;
     private Playlist playlist;
-    private List<Track> tracks;
+    private Set<Track> tracks;
     private List<Playlist> playlists;
     private int playlistId;
 
@@ -49,9 +51,9 @@ public class PlaylistControllerTest {
 
         user = new User("test", "test");
         user.setId(1);
-        tracks = new ArrayList<Track>();
+        tracks = new HashSet<Track>();
         Track firstSong = new Song("Despacito", "Jason Derulo", 300,
-                "https://www.youtube.com/watch?v=kJQP7kiw5Fk", false,
+                "https://www.youtube.com/watch?v=kJQP7kiw5Fk", false, playlist,
                 "Best Meme Songs", 0);
         tracks.add(firstSong);
         playlist = new Playlist("test", user, tracks);
@@ -62,10 +64,10 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void getAllPlaylistsTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulGetAllPlaylistsTest() throws DatabaseException, EntityNotFoundException {
         Mockito.doReturn(playlists).when(playlistDAO).getAll(user.getId());
         Mockito.doReturn(tracks).when(trackDAO).getAllInPlaylist(playlist.getId());
-        List<Track> tracksInPlaylist = trackDAO.getAllInPlaylist(playlist.getId());
+        Set<Track> tracksInPlaylist = trackDAO.getAllInPlaylist(playlist.getId());
 
         PlaylistResponse responseFromController = playlistController.getAllPlaylists(user);
 
@@ -74,7 +76,9 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void deletePlaylistTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulDeletePlaylistTest() throws DatabaseException, EntityNotFoundException {
+        Mockito.doReturn(tracks).when(trackDAO).getAllInPlaylist(playlistId);
+
         playlistController.deletePlaylist(playlistId, user);
 
         verify(playlistDAO).delete(playlistId);
@@ -82,7 +86,7 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void addPlaylistTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulAddPlaylistTest() throws DatabaseException, EntityNotFoundException {
         PlaylistRequest request = new PlaylistRequest();
 
         playlistController.addPlaylist(request, user);
@@ -91,7 +95,7 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void updatePlaylistTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulUpdatePlaylistTest() throws DatabaseException, EntityNotFoundException {
         playlistController.updatePlaylist(playlist, user, playlistId);
 
         verify(playlistDAO).updateByName(playlist);

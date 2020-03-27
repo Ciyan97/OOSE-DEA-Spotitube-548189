@@ -13,6 +13,7 @@ import nl.han.oose.domain.tracks.Track;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class PlaylistControllerImpl implements PlaylistController {
     private PlaylistDAO playlistDAO;
@@ -33,6 +34,7 @@ public class PlaylistControllerImpl implements PlaylistController {
     @Override
     public PlaylistResponse deletePlaylist(int id, User user)
             throws DatabaseException, EntityNotFoundException {
+        deleteTracksInPlaylist(id);
         playlistDAO.delete(id);
         return generatePlaylistResponse(user.getId());
     }
@@ -62,11 +64,18 @@ public class PlaylistControllerImpl implements PlaylistController {
             throws DatabaseException, EntityNotFoundException {
         List<Track> tracks = new ArrayList<Track>();
         for (Playlist playlist: playlists) {
-            List<Track> tracksInPlaylist = trackDAO.getAllInPlaylist(playlist.getId());
+            Set<Track> tracksInPlaylist = trackDAO.getAllInPlaylist(playlist.getId());
             playlist.setTracks(tracksInPlaylist);
             tracks.addAll(tracksInPlaylist);
         }
         return tracks;
+    }
+
+    private void deleteTracksInPlaylist(int id) throws DatabaseException, EntityNotFoundException {
+        Set<Track> tracksToDelete = trackDAO.getAllInPlaylist(id);
+        for (Track track: tracksToDelete) {
+            trackDAO.delete(track.getId());
+        }
     }
 
     private int calculateLength(List<Track> tracks){

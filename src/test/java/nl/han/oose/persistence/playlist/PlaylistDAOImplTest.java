@@ -14,8 +14,8 @@ public class PlaylistDAOImplTest extends BasePersistenceIntegrationTest {
 
     private PlaylistDAO playlistDAO;
 
-    //we use 8 cause it is the eight inserted item.
-    private int id = 8;
+    //we use 2 cause it is the second inserted item.
+    private int id = 2;
 
     @Before
     public void setUp() throws Exception {
@@ -24,7 +24,7 @@ public class PlaylistDAOImplTest extends BasePersistenceIntegrationTest {
     }
 
     @Test
-    public void getAllTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulGetAllTest() throws DatabaseException, EntityNotFoundException {
         int length = 1;
         int userId = 1;
         List<Playlist> playlists = playlistDAO.getAll(userId);
@@ -33,21 +33,21 @@ public class PlaylistDAOImplTest extends BasePersistenceIntegrationTest {
         Assert.assertEquals(length, playlists.size());
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void deleteTest() throws DatabaseException, EntityNotFoundException {
+    @Test(expected = DatabaseException.class)
+    public void deleteTestThrowsException() throws DatabaseException, EntityNotFoundException {
         playlistDAO.delete(id);
         Playlist playlist = playlistDAO.getPlaylist(id);
     }
 
     @Test
-    public void getPlaylistTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulGetPlaylistTest() throws DatabaseException, EntityNotFoundException {
         Playlist playlist = playlistDAO.getPlaylist(id);
 
         Assert.assertNotNull(playlist);
     }
 
     @Test
-    public void updateByNameTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulUpdateByNameTest() throws DatabaseException, EntityNotFoundException {
         String name = "test";
         Playlist playlist = playlistDAO.getPlaylist(id);
         playlist.setName(name);

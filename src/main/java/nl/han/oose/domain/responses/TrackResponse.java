@@ -1,23 +1,19 @@
 package nl.han.oose.domain.responses;
 
+import com.google.gson.annotations.Expose;
 import nl.han.oose.domain.tracks.Track;
 
 import java.util.List;
+import java.util.Set;
 
 public class TrackResponse {
-    private List<Track> tracks;
+    @Expose
+    private Set<Track> tracks;
 
     public TrackResponse() {
     }
 
-    public TrackResponse(List<Track> tracks) {
-        this.tracks = tracks;
-    }
-
-    public List<Track> getTracks() {
-        return tracks;
-    }
-    public void setTracks(List<Track> tracks) {
+    public TrackResponse(Set<Track> tracks) {
         this.tracks = tracks;
     }
 }

@@ -29,14 +29,13 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO {
             session = getSessionFactory().openSession();
             Query query = session.createQuery(hql);
             query.setParameter("user", username);
-            query.setParameter("password", username);
+            query.setParameter("password", password);
             user = (User) query.uniqueResult();
         } catch (Exception e) {
             handleException(e);
         } finally {
             closeSession(session);
         }
-
         if (user == null) {
             throw new UserDoesNotExistException(UserDoesNotExistException.MESSAGE);
         }

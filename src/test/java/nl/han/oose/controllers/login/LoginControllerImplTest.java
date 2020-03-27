@@ -39,7 +39,7 @@ public class LoginControllerImplTest {
     }
 
     @Test
-    public void getUserCallsDaoTest() throws UserDoesNotExistException, DatabaseException {
+    public void successfulGetUserCallsDaoTest() throws UserDoesNotExistException, DatabaseException {
         User user = new User("test", "test");
         Mockito.doReturn(user).when(userDAO).get(user.getUser(),user.getPassword());
 

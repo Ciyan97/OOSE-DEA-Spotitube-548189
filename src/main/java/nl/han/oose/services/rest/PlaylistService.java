@@ -1,5 +1,6 @@
 package nl.han.oose.services.rest;
 
+import com.google.gson.GsonBuilder;
 import nl.han.oose.controllers.track.TrackController;
 import nl.han.oose.domain.requests.TrackRequest;
 import nl.han.oose.domain.responses.TrackResponse;
@@ -24,7 +25,7 @@ import com.google.gson.Gson;
 public class PlaylistService {
     private PlaylistController playlistController;
     private TrackController trackController;
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     public PlaylistService() {}
 

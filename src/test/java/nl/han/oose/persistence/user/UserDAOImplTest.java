@@ -27,7 +27,7 @@ public class UserDAOImplTest extends BasePersistenceIntegrationTest {
     }
 
     @Test
-    public void getUserTest() throws UserDoesNotExistException, DatabaseException {
+    public void successfulGetUserTest() throws UserDoesNotExistException, DatabaseException {
         userDAO.save(user);
 
         User userFromDAO = userDAO.get(user.getUser(), user.getPassword());

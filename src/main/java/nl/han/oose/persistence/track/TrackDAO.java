@@ -5,11 +5,12 @@ import nl.han.oose.persistence.DAO;
 import nl.han.oose.domain.tracks.Track;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TrackDAO extends DAO<Track> {
-    List<Track> getAll() throws DatabaseException, EntityNotFoundException;
-    List<Track> getAllInPlaylist(int playlistId) throws DatabaseException, EntityNotFoundException;
-    List<Track> getAllExcludingPlaylist(int playlistId) throws DatabaseException, EntityNotFoundException;
+    Set<Track> getAll() throws DatabaseException, EntityNotFoundException;
+    Set<Track> getAllInPlaylist(int playlistId) throws DatabaseException, EntityNotFoundException;
+    List<String> getTrackNamesInPlaylist(int playlistId) throws DatabaseException, EntityNotFoundException;
     Track getTrack(int id) throws DatabaseException, EntityNotFoundException;
-    void updateTrackIsOfflineAvailable(int id, boolean isOfflineAvailable) throws DatabaseException;
+    void delete(int id) throws DatabaseException;
 }

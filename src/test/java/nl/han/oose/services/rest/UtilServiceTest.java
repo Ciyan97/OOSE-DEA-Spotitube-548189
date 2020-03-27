@@ -33,7 +33,7 @@ public class UtilServiceTest {
     }
 
     @Test
-    public void insertDatabaseTestDataTest() throws DatabaseException {
+    public void successfulInsertDatabaseTestDataTest() throws DatabaseException {
         int statusCode = 200;
 
         Response response = utilService.insertDatabaseTestData();

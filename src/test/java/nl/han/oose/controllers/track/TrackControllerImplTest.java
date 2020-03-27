@@ -19,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.Mockito.verify;
 
@@ -33,14 +35,14 @@ public class TrackControllerImplTest {
     private TrackControllerImpl trackController;
 
     private User user = new User("user", "password");
+    private Playlist playlist;
     private Track firstSong = new Song("Despacito", "Jason Derulo", 300,
-            "https://www.youtube.com/watch?v=kJQP7kiw5Fk", false,
+            "https://www.youtube.com/watch?v=kJQP7kiw5Fk", false, playlist,
             "Best Meme Songs", 0);
     private Track secondSong = new Song("Thriller", "Michael Jackson", 275,
-            "https://www.youtube.com/watch?v=sOnqjkJTMaA", false,
+            "https://www.youtube.com/watch?v=sOnqjkJTMaA", false, playlist,
             "Best Meme Songs", 0);
-    private ArrayList<Track> tracks = new ArrayList<Track>();
-    private Playlist playlist;
+    private Set<Track> tracks = new HashSet<Track>();
     private int playlistId = 1;
     private int trackId = 1;
 
@@ -57,7 +59,7 @@ public class TrackControllerImplTest {
     }
 
     @Test
-    public void getAllTrackByPlaylistIdTest() throws DatabaseException, EntityNotFoundException {
+    public void verifyGetAllTrackByPlaylistIdTest() throws DatabaseException, EntityNotFoundException {
         int id = 1;
 
         trackController.getAllTrackByPlaylistId(id);
@@ -66,7 +68,7 @@ public class TrackControllerImplTest {
     }
 
     @Test
-    public void deleteTrackInPlaylistTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulDeleteTrackInPlaylistTest() throws DatabaseException, EntityNotFoundException {
         Mockito.doReturn(playlist).when(playlistDAO).getPlaylist(playlistId);
         Mockito.doReturn(tracks).when(trackDAO).getAllInPlaylist(playlistId);
 
@@ -77,10 +79,10 @@ public class TrackControllerImplTest {
     }
 
     @Test
-    public void addTrackToPlaylistTest() throws DatabaseException, EntityNotFoundException {
+    public void verifyAddTrackToPlaylistTest() throws DatabaseException, EntityNotFoundException {
         TrackRequest request = new TrackRequest();
         request.setId(1);
-        Mockito.doReturn(firstSong).when(trackDAO).getTrack(request.getId());
+        Mockito.doReturn(firstSong).when(trackDAO).getTrack(1);
         Mockito.doReturn(playlist).when(playlistDAO).getPlaylist(playlistId);
         Mockito.doReturn(tracks).when(trackDAO).getAllInPlaylist(playlistId);
 
@@ -90,16 +92,18 @@ public class TrackControllerImplTest {
     }
 
     @Test
-    public void getAllTracksTest() throws DatabaseException, EntityNotFoundException {
+    public void verifyGetAllTracksTest() throws DatabaseException, EntityNotFoundException {
         trackController.getAllTracks();
 
         verify(trackDAO).getAll();
     }
 
     @Test
-    public void getAllTracksNotInPlaylistTest() throws DatabaseException, EntityNotFoundException {
+    public void successfulGetAllTracksNotInPlaylistTest() throws DatabaseException, EntityNotFoundException {
+        ArrayList<String> names = new ArrayList<String>();
+        names.add("Despacito");
         Mockito.doReturn(tracks).when(trackDAO).getAll();
-        Mockito.doReturn(tracks).when(trackDAO).getAllInPlaylist(playlistId);
+        Mockito.doReturn(names).when(trackDAO).getTrackNamesInPlaylist(playlistId);
 
         TrackResponse response = trackController.getAllTracksNotInPlaylist(playlistId);
 

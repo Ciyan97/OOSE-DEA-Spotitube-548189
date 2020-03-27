@@ -5,11 +5,10 @@ import nl.han.oose.domain.tracks.Track;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Playlist {
-
     @Expose
     @Id
     @GeneratedValue
@@ -24,13 +23,14 @@ public class Playlist {
     private User owner;
 
     @JsonbTransient
-    @ManyToMany()
-    private List<Track> tracks;
+    @Expose
+    @ManyToMany(cascade=CascadeType.ALL)
+    private Set<Track> tracks;
 
     public Playlist() {
     }
 
-    public Playlist(String name, User owner, List<Track> tracks) {
+    public Playlist(String name, User owner, Set<Track> tracks) {
         this.name = name;
         this.owner = owner;
         this.tracks = tracks;
@@ -48,16 +48,16 @@ public class Playlist {
     public void setName(String name) {
         this.name = name;
     }
-    public List<Track> getTracks() {
+    public Set<Track> getTracks() {
         return tracks;
-    }
-    public User getOwner() {
-        return owner;
     }
     public void setOwner(User owner) {
         this.owner = owner;
     }
-    public void setTracks(List<Track> tracks) {
+    public void setTracks(Set<Track> tracks) {
         this.tracks = tracks;
+    }
+    public User getOwner() {
+        return owner;
     }
 }

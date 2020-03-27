@@ -54,7 +54,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void getAllPlaylistsTest()
+    public void successfulGetAllPlaylistsTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new PlaylistResponse()).when(playlistController).getAllPlaylists(user);
@@ -72,7 +72,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void deletePlaylistByIdTest()
+    public void successfulDeletePlaylistByIdTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new PlaylistResponse()).when(playlistController).deletePlaylist(playlistId, user);
@@ -90,7 +90,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void addPlaylistTest()
+    public void successfulAddPlaylistTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new PlaylistResponse()).when(playlistController).addPlaylist(new PlaylistRequest(), user);
@@ -108,7 +108,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void updatePlaylistByIdTest()
+    public void successfulUpdatePlaylistByIdTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new PlaylistResponse()).when(playlistController)
@@ -133,7 +133,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void getAllTracksByPlaylistByIdTest()
+    public void successfulGetAllTracksByPlaylistByIdTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new TrackResponse()).when(trackController).getAllTrackByPlaylistId(playlistId);
@@ -151,7 +151,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void deleteTrackInPlaylistByIdTest()
+    public void successfulDeleteTrackInPlaylistByIdTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new TrackResponse()).when(trackController).deleteTrackInPlaylist(playlistId, 1);
@@ -169,7 +169,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void addTrackToPlaylistTest()
+    public void successfulAddTrackToPlaylistTest()
             throws ForbiddenUserException, DatabaseException, EntityNotFoundException {
 
         Mockito.doReturn(new TrackResponse()).when(trackController).addTrackToPlaylist(new TrackRequest(), playlistId);

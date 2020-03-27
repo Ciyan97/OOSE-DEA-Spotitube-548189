@@ -33,7 +33,7 @@ public class LoginServiceTest {
     }
 
     @Test()
-    public void loginTest() throws UserDoesNotExistException, DatabaseException {
+    public void successfulLoginTest() throws UserDoesNotExistException, DatabaseException {
         int responseStatus = 200;
         User fakeUser = new User("test", "test");
         LoginResponse fakeLoginResponse = new LoginResponse();
